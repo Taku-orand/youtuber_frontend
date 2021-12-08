@@ -1,7 +1,7 @@
 import React from "react";
 
 export const Form = (props) => {
-  const { onChange, handleSubmit, value, buttonType } = props;
+  const { onChange, handleSubmit, value, buttonType, youtuber, onChangeChannelId, channelId } = props;
   return (
     <>
       <form>
@@ -17,12 +17,13 @@ export const Form = (props) => {
         </div>
         <div>
           <label htmlFor="channelId">チャンネルID</label>
+          <div>{channelId}</div>
           <input
             type="text"
             name="channelId"
             id="channelId"
-            onChange={(e) => onChange(e)}
-            value={value.channelId}
+            onChange={(youtuber) => onChangeChannelId(youtuber?.id.channelId)}
+            value={channelId}
           />
         </div>
         <div>
