@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
+import { Button } from "@chakra-ui/react"
 
-import { getYoutuberDetail } from "../lib/api/post";
-import { countup, getCollabList } from "../lib/api/collab";
+import { getYoutuberDetail } from "../../lib/api/youtuber";
+import { countup, getCollabList } from "../../lib/api/collab";
 
 export const YoutuberDetail = () => {
   const [data, setData] = useState({});
@@ -66,10 +67,10 @@ export const YoutuberDetail = () => {
         <div>
           {collab.map((item) => (
             <div key={item.id}>
-              <div>{item.id}</div>
-              <div>{item.channelTitle}</div>
-              <div>{item.count}人</div>
-              <button onClick={()=>onClickCountup(item)}>👍</button>
+              <span>ID:{item.id}, </span>
+              <span>{item.channelTitle}, </span>
+              <span>{item.count}人 </span>
+              <Button size="xs" onClick={()=>onClickCountup(item)}>👍</Button>
             </div>
           ))}
         </div>

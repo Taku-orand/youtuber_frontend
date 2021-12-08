@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import { updateYoutuber, getYoutuberDetail } from "../lib/api/post";
-import { Form } from "./Form";
+import { updateYoutuber, getYoutuberDetail } from "../../lib/api/youtuber";
+import { Form } from "../Form";
 
 export const Edit = () => {
   // apiで取得したデータを管理する為のstate
