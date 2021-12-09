@@ -1,7 +1,7 @@
 import React from "react";
 
 export const Form = (props) => {
-  const { onChange, handleSubmit, value, buttonType, youtuber, onChangeChannelId, channelId } = props;
+  const { onChange, handleSubmit, value, buttonType, onChangeChannelId, channelId } = props;
   return (
     <>
       <form>

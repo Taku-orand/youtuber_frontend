@@ -1,18 +1,30 @@
+/* eslint-disable react-hooks/exhaustive-deps*/
 import React, { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
-import { updateYoutuber, getYoutuberDetail } from "../../lib/api/youtuber";
-import { Form } from "../Form";
+import {
+  Input,
+  Flex,
+  Box,
+  Textarea,
+  Button,
+  Image,
+  Spacer,
+} from "@chakra-ui/react";
 
+import { updateYoutuber, getYoutuberDetail } from "../../lib/api/youtuber";
+import { useMessage } from "../../hooks/useMessage";
+import TextareaAutosize from "react-textarea-autosize";
+
+// Youtuber記事の編集ページ
 export const Edit = () => {
   // apiで取得したデータを管理する為のstate
-  const [value, setValue] = useState({
-    channelTitle: "",
-    channelId: "",
-    channelThumbnail: "",
-    lastEditor: "",
-    createdAt: "",
-    updatedAt: "",
-  });
+  const [channelTitle, setChannelTitle] = useState("");
+  const [channelThumbnail, setChannelThumbnail] = useState("");
+  const [channelId, setChannelId] = useState("");
+  const [lastEditor, setLastEditor] = useState("");
+  const [content, setContent] = useState("");
+  const { showMessage } = useMessage();
+
   // 一覧からreact-router-domを使ってidを取得
   const query = useParams();
 
@@ -25,50 +37,115 @@ export const Edit = () => {
   const handleGetData = async (query) => {
     try {
       const res = await getYoutuberDetail(query.id);
-      console.log(res.data);
+      if (!res.data.youtuber) {
+        showMessage({ title: "データの取得に失敗しました", status: "error" });
+      }
       // 使う値のみstateにセットする
-      setValue({
-        channelTitle: res.data.youtuber.channelTitle,
-        channelId: res.data.youtuber.channelId,
-        channelThumbnail: res.data.youtuber.channelThumbnail,
-        lastEditor: res.data.youtuber.lastEditor,
-        createdAt: res.data.youtuber.createdAt,
-        updatedAt: res.data.youtuber.updatedAt,
-        content: res.data.youtuber.content,
-      });
+      setChannelTitle(res.data.youtuber.channelTitle);
+      setChannelId(res.data.youtuber.channelId);
+      setChannelThumbnail(res.data.youtuber.channelThumbnail);
+      setLastEditor(res.data.youtuber.lastEditor);
+      setContent(res.data.youtuber.content);
     } catch (e) {
-      console.log(e);
+      showMessage({ title: "データの取得に失敗しました", status: "error" });
     }
   };
+
   // テキストフィールドの変更を検知し値を書き換えstateで管理
-  const onChangeValue = (e) => {
-    setValue({
-      ...value,
-      [e.target.name]: e.target.value,
-    });
+  const onChangeChannelTitle = (e) => {
+    setChannelTitle(e.target.value);
   };
+  const onChangeLastEditor = (e) => {
+    setLastEditor(e.target.value);
+  };
+  const onChangeContent = (e) => {
+    setContent(e.target.value);
+  };
+
   // 更新ボタン押下後、idとparameterをapiクライアントに渡しリクエストを投げる
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const onClickSubmit = async () => {
     try {
-      const response = await updateYoutuber(query.id, value);
-      console.log(response);
+      const response = await updateYoutuber(query.id, {
+        youtuber: {
+          channelTitle: channelTitle,
+          channelId: channelId,
+          channelThumbnail: channelThumbnail,
+          lastEditor: lastEditor,
+          content: content,
+        },
+      });
+      if (response.data.updated)
+        showMessage({ title: "編集しました", status: "success" });
       // リクエストが成功したら'/'にリダイレクトさせる
-      history.push("/");
+      history.push("/youtuber/detail/" + query.id);
     } catch (e) {
       console.log(e);
+      showMessage({ title: "編集に失敗しました", status: "error" });
     }
+  };
+
+  const onClickCancel = () => {
+    history.push("/youtuber/detail/" + query.id);
   };
 
   return (
     <>
-      <h1>Edit</h1>
-      <Form
-        onChange={onChangeValue}
-        handleSubmit={handleSubmit}
-        value={value}
-        buttonType="更新"
+      <Image
+        borderRadius="full"
+        boxSize="160px"
+        src={channelThumbnail}
+        alt={channelTitle}
+        m="auto"
       />
+
+      <Box bg="white" px={100} py={50} borderRadius="md">
+        <form>
+          <div>
+            <label>チャンネル名</label>
+            <Input
+              name="channelTitle"
+              onChange={(e) => onChangeChannelTitle(e)}
+              value={channelTitle}
+            />
+          </div>
+          <div>
+            <label>チャンネルURL</label>
+            <br />
+            <Input
+              isReadOnly
+              isDisabled
+              name="channelUrl"
+              value={`https://www.youtube.com/channel/${channelId}`}
+            />
+          </div>
+          <div>
+            <label>編集者</label>
+            <Input
+              name="lastEditor"
+              onChange={(e) => onChangeLastEditor(e)}
+              value={lastEditor}
+            />
+          </div>
+          <div>
+            <label htmlFor="content">概要</label>
+            <Textarea
+              minH="unset"
+              overflow="hidden"
+              w="100%"
+              resize="none"
+              minRows={1}
+              onChange={(e) => onChangeContent(e)}
+              value={content}
+              as={TextareaAutosize}
+            />
+          </div>
+          <Flex mt={4}>
+            <Button onClick={onClickCancel}>キャンセル</Button>
+            <Spacer />
+            <Button onClick={onClickSubmit}>更新する</Button>
+          </Flex>
+        </form>
+      </Box>
     </>
   );
 };

@@ -4,16 +4,13 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import { Login } from "../components/page/Login"
 import { routes } from "./Routes";
 import { Header } from "../components/organisms/layout/Header";
-import { Signup } from "../components/page/Signup";
+import { Page404 } from "../components/page/Page404";
 
 export const Router = () => {
   return (
     <Switch>
       <Route exact path="/">
         <Redirect to="/youtuber" />
-      </Route>
-      <Route exact path="/signup">
-        <Signup />
       </Route>
       <Route exact path="/login">
         <Login />
@@ -35,9 +32,9 @@ export const Router = () => {
           </Switch>
         )}
       />
-      {/* <Route path="*">
+      <Route path="*">
         <Page404 />
-      </Route> */}
+      </Route>
     </Switch>
   );
 };

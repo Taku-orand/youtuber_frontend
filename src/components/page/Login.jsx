@@ -10,6 +10,8 @@ import {
 } from "@chakra-ui/react";
 import { useHistory } from "react-router-dom";
 
+// ログインページ
+// ただログイン処理はできてない
 export const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -24,7 +26,6 @@ export const Login = () => {
   };
 
   const onClickLogin = () => {
-    console.log("ログイン");
     history.push("/");
   };
 

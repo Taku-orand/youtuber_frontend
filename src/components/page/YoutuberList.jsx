@@ -7,23 +7,25 @@ import {
   Box,
   Stack,
   Image,
-  Button,
   Text,
+  Link,
+  Button,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
 
 import { getYoutuberList } from "../../lib/api/youtuber";
 
+// Youtuber記事の一覧ページ
 export const YoutuberList = () => {
   const [youtubers, setYoutubers] = useState([]);
   const [loading, setLoading] = useState(false);
-  const history = useHistory();
 
+  // レンダー後に実行する
   useEffect(() => {
     handleGetYoutuberList();
   }, []);
 
+  // Youtuber記事を取得する関数
   const handleGetYoutuberList = async () => {
     setLoading(true);
     try {
@@ -35,27 +37,8 @@ export const YoutuberList = () => {
     }
   };
 
-  // const onClickYoutuberDetail = useCallback((youtuber) => {
-  //   history.push(`/youtuber/detail/${youtuber.id}`)
-  // },[])
-
-  // 削除する関数を追加
-  // const handleYoutuberDelete = async (item) => {
-  //   // 引数にitemを渡してitem.idで「1」など取得できればOK
-  //   console.log("click", item.id);
-  //   try {
-  //     const res = await deleteYoutuber(item.id);
-  //     console.log(res.data); // データを再取得
-  //     handleGetYoutuberList();
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // };
-
   return (
     <>
-      <h1>Youtuber一覧ページ</h1>
-      <button onClick={() => history.push("/youtuber/create")}>新規作成</button>
       {loading ? (
         <Center h="100vh">
           <Spinner color="white" />
@@ -71,7 +54,6 @@ export const YoutuberList = () => {
                 borderRadius="10px"
                 shadow="md"
                 p={4}
-                _hover={{ cursor: "pointer", opacity: 0.8 }}
               >
                 <Stack textAlign="center">
                   <Image
@@ -85,7 +67,14 @@ export const YoutuberList = () => {
                     {youtuber.channelTitle}
                   </Text>
                   <Text fontSize="sm" fontWeight="gray"></Text>
-                  <Button size="sm">詳細</Button>
+                  <Link href={`${window.location.href}/detail/${youtuber.id}`}>
+                    <Button
+                      _hover={{ cursor: "pointer", opacity: 0.5 }}
+                      size="sm"
+                    >
+                      詳細
+                    </Button>
+                  </Link>
                 </Stack>
               </Box>
             </WrapItem>

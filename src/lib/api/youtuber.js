@@ -17,8 +17,16 @@ export const createYoutuber = (params) => {
 };
 
 // 更新
-export const updateYoutuber = (id, params) => {
-  return client.patch(`/youtubers/${id}`, params);
+export const updateYoutuber = (id, {youtuber}) => {
+  return client.patch(`/youtubers/`+id, {
+    youtuber: {
+        channelTitle: youtuber.channelTitle,
+        channelId: youtuber.channelId,
+        channelThumbnail: youtuber.channelThumbnail,
+        lastEditor: youtuber.lastEditor,
+        content: youtuber.content,
+    },
+  });
 };
 
 // 削除
