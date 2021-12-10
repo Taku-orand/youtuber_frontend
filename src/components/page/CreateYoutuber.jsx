@@ -43,7 +43,6 @@ export const CreateYoutuber = () => {
 
   // 新規記事の登録
   const onClickSubmit = async () => {
-    try {
       const res = await createYoutuber({
         youtuber: {
           channelTitle: keyword,
@@ -56,14 +55,12 @@ export const CreateYoutuber = () => {
 
       if (res.data.title) {
         showMessage({ title: res.data.title, status: "warning" });
+        showMessage({ title: "新規作成に失敗しました", status: "error" });
         return;
+      } else {
+        showMessage({ title: "新規作成しました", status: "success" });
+        history.push("/");
       }
-      showMessage({ title: "新規作成しました", status: "success" });
-      history.push("/");
-    } catch (e) {
-      showMessage({ title: "新規作成に失敗しました", status: "error" });
-      console.log(e);
-    }
   };
 
   // 検索ワードからYoutube Data APIにチャンネルを検索する
@@ -125,11 +122,7 @@ export const CreateYoutuber = () => {
 
       {!isFound ? (
         <Wrap justify="center">
-          {loading ? (
-            <CircularProgress isIndeterminate color="gray" />
-          ) : (
-            <br />
-          )}
+          {loading ? <CircularProgress isIndeterminate color="gray" /> : <br />}
         </Wrap>
       ) : (
         <Wrap p={{ base: 4, md: 10 }} justify="center">
