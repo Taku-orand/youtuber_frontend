@@ -8,8 +8,6 @@ import {
   Textarea,
   Button,
   Image,
-  Center,
-  Spinner,
   Text,
   FormControl,
   FormLabel,
@@ -24,8 +22,10 @@ import {
   Stack,
   Wrap,
   WrapItem,
-  Heading
+  Heading,
+  Skeleton,
 } from "@chakra-ui/react";
+import { SmallAddIcon } from "@chakra-ui/icons";
 
 import { getYoutuberDetail } from "../../lib/api/youtuber";
 import { countup, getCollabList, postCreateCollab } from "../../lib/api/collab";
@@ -114,7 +114,7 @@ export const YoutuberDetail = () => {
       showMessage({ title: "追加しました", status: "success" });
     } catch (e) {
       console.log(e);
-      showMessage({title: "追加に失敗しました", status: "error"})
+      showMessage({ title: "追加に失敗しました", status: "error" });
     }
   };
 
@@ -182,18 +182,16 @@ export const YoutuberDetail = () => {
         <Box bg="white" pt={4} pr={14} pl={14} pb={4} mt={4}>
           <Flex>
             <Heading as="h3">コラボ希望Youtuber</Heading>
-            <Button
-              bgColor="yellow.400"
-              ml="4"
-              onClick={onClickAddCollab}
-            >
+            <Button bgColor="yellow.400" ml="4" onClick={onClickAddCollab}>
               追加
             </Button>
           </Flex>
           {loading ? (
-            <Center>
-              <Spinner color="gray" />
-            </Center>
+            <Stack>
+              <Skeleton height="20px" />
+              <Skeleton height="20px" />
+              <Skeleton height="20px" />
+            </Stack>
           ) : (
             <Wrap p={{ base: 4, md: 10 }}>
               {collab.map((item) => (
@@ -208,10 +206,12 @@ export const YoutuberDetail = () => {
                         {item.channelTitle}
                       </Link>
                     </Text>
-                    <span>{item.count}人 </span>
-                    <Button size="xs" onClick={() => onClickCountup(item)}>
-                      👍
-                    </Button>
+                    <Wrap justify="end">
+                      <span>{item.count}人 </span>
+                      <Button size="xs" onClick={() => onClickCountup(item)}>
+                        <SmallAddIcon boxSize="1.5rem" color="pink.500" />
+                      </Button>
+                    </Wrap>
                   </Box>
                 </WrapItem>
               ))}
@@ -241,6 +241,12 @@ export const YoutuberDetail = () => {
                 <Input onChange={(e) => onChangeChannelId(e)} />
               </FormControl>
             </Stack>
+            <Link href="https://www.youtube.com" isExternal mt={4}>
+              <Text color="red" as="span" fontWeight="bold">
+                Youtube
+              </Text>
+              サイトへ
+            </Link>
           </ModalBody>
           <ModalFooter>
             <Button onClick={onClickAddCollabSubmit}>追加</Button>

@@ -59,7 +59,7 @@ export const YoutuberList = () => {
                   <Image
                     borderRadius="full"
                     boxSize="160px"
-                    src="https://yt3.ggpht.com/ytc/AKedOLRZrLxmGvezBeq5xh8-gZTkclJqd6LU11Z_souH=s88-c-k-c0xffffffff-no-rj-mo"
+                    src={youtuber.channelThumbnail}
                     alt={youtuber.channelTitle}
                     m="auto"
                   />

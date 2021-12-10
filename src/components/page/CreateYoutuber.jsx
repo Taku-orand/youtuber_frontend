@@ -16,6 +16,7 @@ import {
   InputLeftElement,
   InputGroup,
   Textarea,
+  CircularProgress,
 } from "@chakra-ui/react";
 import { SearchIcon } from "@chakra-ui/icons";
 import TextareaAutosize from "react-textarea-autosize";
@@ -32,6 +33,7 @@ export const CreateYoutuber = () => {
   const [content, setContent] = useState("");
   const [keyword, setKeyWord] = useState("");
   const [isFound, setIsFound] = useState(false);
+  const [loading, setLoading] = useState(false);
   const history = useHistory();
   const { showMessage } = useMessage();
 
@@ -66,6 +68,7 @@ export const CreateYoutuber = () => {
 
   // 検索ワードからYoutube Data APIにチャンネルを検索する
   const onClickSearchYoutuber = async () => {
+    setLoading(true);
     const youtuber = await youtubeSearch(keyword);
     if (youtuber) {
       setChannelId(youtuber[0].id.channelId);
@@ -82,6 +85,7 @@ export const CreateYoutuber = () => {
         status: "error",
       });
     }
+    setLoading(false);
   };
 
   // Inputの値を変えるため
@@ -120,7 +124,13 @@ export const CreateYoutuber = () => {
       </Wrap>
 
       {!isFound ? (
-        <br />
+        <Wrap justify="center">
+          {loading ? (
+            <CircularProgress isIndeterminate color="gray" />
+          ) : (
+            <br />
+          )}
+        </Wrap>
       ) : (
         <Wrap p={{ base: 4, md: 10 }} justify="center">
           <WrapItem mx="auto">
