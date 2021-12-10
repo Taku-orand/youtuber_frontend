@@ -7,14 +7,9 @@ import {
   DrawerOverlay,
 } from "@chakra-ui/react";
 
+// 左からドロワーがでてくるもの
 export const MenuDrawer = memo((props) => {
-  const {
-    isOpen,
-    onClose,
-    onClickYoutuberList,
-    onClickAddYoutuber,
-    onClickLogin,
-  } = props;
+  const { isOpen, onClose, onClickYoutuberList, onClickAddYoutuber } = props;
 
   return (
     <Drawer placement="left" size="xs" onClose={onClose} isOpen={isOpen}>
@@ -26,9 +21,6 @@ export const MenuDrawer = memo((props) => {
             </Button>
             <Button w="100%" onClick={onClickAddYoutuber}>
               Youtuber追加
-            </Button>
-            <Button w="100%" onClick={onClickLogin}>
-              ログイン
             </Button>
           </DrawerBody>
         </DrawerContent>

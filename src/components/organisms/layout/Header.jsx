@@ -6,13 +6,14 @@ import { useHistory } from "react-router-dom";
 import { MenuIconButton } from "../../atoms/button/MenuIconButton";
 import { MenuDrawer } from "../../molecules/drawer/MenuDrawer";
 
+// ヘッダー部分
 export const Header = memo(() => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const history = useHistory();
 
+  // ページ遷移を行う
   const onClickYoutuberList = useCallback(() => history.push("/youtuber"), []);
-  const onClickLogin = useCallback(() => history.push("/login"), []);
   const onClickAddYoutuber = useCallback(
     () => history.push("/youtuber/create"),
     []
@@ -52,9 +53,6 @@ export const Header = memo(() => {
           <Box pr={4}>
             <Link onClick={onClickAddYoutuber}>Youtuber追加</Link>
           </Box>
-          <Box pr={4}>
-            <Link onClick={onClickLogin}>ログイン</Link>
-          </Box>
         </Flex>
       </Flex>
       <MenuDrawer
@@ -62,7 +60,6 @@ export const Header = memo(() => {
         onClose={onClose}
         onClickYoutuberList={onClickYoutuberList}
         onClickAddYoutuber={onClickAddYoutuber}
-        onClickLogin={onClickLogin}
       />
     </>
   );
